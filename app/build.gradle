@@ -1,0 +1,50 @@
+plugins {
+    id 'com.android.application'
+    id 'com.chaquo.python'
+}
+
+repositories {
+    google()
+    mavenCentral()
+    maven { url 'https://chaquo.com/maven' }   // запасной адрес для рантайма Chaquopy
+}
+
+android {
+    namespace 'com.snyal.app'
+    compileSdk 35
+
+    defaultConfig {
+        applicationId 'com.snyal.app'
+        minSdk 26
+        targetSdk 35                       // Android 15
+        versionCode 23
+        versionName '2.3-beta'
+
+        ndk {
+            abiFilters 'arm64-v8a'         // только arm64-v8a
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            signingConfig signingConfigs.debug   // подпись отладочным ключом — для установки «с рук»
+        }
+    }
+
+    lint {
+        checkReleaseBuilds false
+        abortOnError false
+    }
+}
+
+chaquopy {
+    defaultConfig {
+        version = '3.13'                   // Python 3.13: 64-bit и страницы 16 КБ (Android 15+)
+    }
+}
